@@ -15,7 +15,6 @@ exports.seed = function (knex) {
           brand: 'Artificial Tears',
           condition: 'User-friendly',
           delivery_method: 'info-mediaries',
-          created_at: '2019-12-06',
         },
         {
           id: 2,
@@ -27,7 +26,6 @@ exports.seed = function (knex) {
           brand: 'ZOLPIDEM TARTRATE',
           condition: 'Polarised',
           delivery_method: 'Enhanced',
-          created_at: '2020-05-31',
         },
         {
           id: 3,
@@ -39,7 +37,6 @@ exports.seed = function (knex) {
           brand: 'Stings, Bites, Swellings',
           condition: 'model',
           delivery_method: 'secondary',
-          created_at: '2020-09-30',
         },
         {
           id: 4,
@@ -51,7 +48,6 @@ exports.seed = function (knex) {
           brand: 'ARTHRI-SUPPORT',
           condition: 'info-mediaries',
           delivery_method: 'policy',
-          created_at: '2020-10-12',
         },
         {
           id: 5,
@@ -63,7 +59,6 @@ exports.seed = function (knex) {
           brand: 'LISINOPRIL AND HYDROCHLOROTHIAZIDE',
           condition: 'didactic',
           delivery_method: 'Profound',
-          created_at: '2020-06-03',
         },
       ]);
     });

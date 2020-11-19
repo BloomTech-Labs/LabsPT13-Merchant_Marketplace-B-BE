@@ -16,7 +16,7 @@ exports.up = function (knex) {
     table.string('brand');
     table.string('condition').notNullable();
     table.string('delivery_method').notNullable();
-    table.timestamps('created_at', { useTz: true });
+    table.timestamps(true, true);
   });
 };
 
