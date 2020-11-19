@@ -33,8 +33,7 @@ router.get('/:id', authRequired, (req, res) => {
 
 // create a new product
 router.post('/', authRequired, async (req, res) => {
-  const product = req.body;
-  // !todo remove the tags and store them.
+  let product = req.body;
 
   if (product) {
     const id = product.id || 0;

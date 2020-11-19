@@ -14,7 +14,7 @@ exports.seed = function (knex) {
           category: 'Marketing',
           brand: 'Artificial Tears',
           condition: 'User-friendly',
-          delivery_method: 'info-mediaries',
+          delivery_method: 'Local Pickup',
         },
         {
           id: 2,
@@ -25,7 +25,7 @@ exports.seed = function (knex) {
           category: 'Business Development',
           brand: 'ZOLPIDEM TARTRATE',
           condition: 'Polarised',
-          delivery_method: 'Enhanced',
+          delivery_method: 'Delivery',
         },
         {
           id: 3,
@@ -36,7 +36,7 @@ exports.seed = function (knex) {
           category: 'Business Development',
           brand: 'Stings, Bites, Swellings',
           condition: 'model',
-          delivery_method: 'secondary',
+          delivery_method: 'Local Pickup or Delivery',
         },
         {
           id: 4,
@@ -47,7 +47,7 @@ exports.seed = function (knex) {
           category: 'Marketing',
           brand: 'ARTHRI-SUPPORT',
           condition: 'info-mediaries',
-          delivery_method: 'policy',
+          delivery_method: 'Local Pickup',
         },
         {
           id: 5,
@@ -58,7 +58,7 @@ exports.seed = function (knex) {
           category: 'Product Management',
           brand: 'LISINOPRIL AND HYDROCHLOROTHIAZIDE',
           condition: 'didactic',
-          delivery_method: 'Profound',
+          delivery_method: 'Local Pickup',
         },
       ]);
     });
