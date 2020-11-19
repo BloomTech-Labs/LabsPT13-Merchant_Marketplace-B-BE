@@ -45,7 +45,7 @@ router.post('/', authRequired, async (req, res) => {
           await Products.create(product).then((product) => {
             res
               .status(201)
-              .json({ message: 'Product created!', product: product[0] });
+              .json({ message: 'Product created', product: product[0] });
           });
         } else {
           res.status(400).json({ message: 'product already exists' });

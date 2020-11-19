@@ -6,7 +6,6 @@ exports.seed = function (knex) {
       // Inserts seed entries
       return knex('products').insert([
         {
-          id: 1,
           profile_id: '00ulthapbErVUwVJy4x6',
           title: 'Mrs',
           price: 12.99,
@@ -17,7 +16,6 @@ exports.seed = function (knex) {
           delivery_method: 'Local Pickup',
         },
         {
-          id: 2,
           profile_id: '2j0epjkdhqo6wvkh0v7f',
           title: 'Rev',
           price: 12.99,
@@ -28,7 +26,6 @@ exports.seed = function (knex) {
           delivery_method: 'Delivery',
         },
         {
-          id: 3,
           profile_id: 'jhbgvwyejp81ds9jzuo9',
           title: 'Mrs',
           price: 12.99,
@@ -39,7 +36,6 @@ exports.seed = function (knex) {
           delivery_method: 'Local Pickup or Delivery',
         },
         {
-          id: 4,
           profile_id: 'bv8tg9jvp9t1461zr7x1',
           title: 'Honorable',
           price: 12.99,
@@ -50,7 +46,6 @@ exports.seed = function (knex) {
           delivery_method: 'Local Pickup',
         },
         {
-          id: 5,
           profile_id: 'pv2864sfheem5j4o2vhs',
           title: 'Rev',
           price: 12.99,
