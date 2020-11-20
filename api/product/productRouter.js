@@ -1,7 +1,7 @@
 const express = require('express');
 const authRequired = require('../middleware/authRequired');
-const Products = require('./productModel');
 const router = express.Router();
+const Products = require('./productModel');
 
 // retrieve all existing products
 router.get('/', authRequired, (req, res) => {
@@ -35,7 +35,7 @@ router.get('/:id', authRequired, (req, res) => {
 router.post('/', authRequired, async (req, res) => {
   let product = req.body;
 
-  if (product) {
+  if (Object.keys(product).length > 0) {
     const id = product.id || 0;
 
     try {
@@ -56,7 +56,56 @@ router.post('/', authRequired, async (req, res) => {
       res.status(500).json({ message: err.message });
     }
   } else {
+    res.status(404).json({
+      message: 'Product info missing',
+    });
+  }
+});
+
+router.put('/', authRequired, async (req, res) => {
+  const product = req.body;
+
+  if (Object.keys(product).length > 0) {
+    const id = product.id || 0;
+    Products.findById(id)
+      .then(Products.update(id, product))
+      .then((updated) => {
+        res.status(200).json({ message: 'Product updated', product: updated });
+      })
+      .catch((err) => {
+        es.status(500).json({
+          message: `Could not update product '${id}'`,
+          error: err.message,
+        });
+      });
+  } else {
     res.status(404).json({ message: 'Product info missing' });
+  }
+});
+
+router.delete('/:id', authRequired, async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    let product = await Products.findById(id);
+
+    if (Object.keys(product).length > 0) {
+      Products.remove(product.id).then(() => {
+        res
+          .status(200)
+          .json({ message: `Product '${id}' was deleted.`, product });
+      });
+    } else {
+      res.status(401).json({
+        message: `Could not find product with ID: ${id}`,
+        error: err.message,
+      });
+    }
+  } catch (err) {
+    res.status(500).json({
+      message: `Could not delete product with ID: ${id}`,
+      error: err.message,
+    });
   }
 });
 

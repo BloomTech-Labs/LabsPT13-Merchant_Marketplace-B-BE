@@ -228,7 +228,7 @@ router.put('/', authRequired, function (req, res) {
           .then((updated) => {
             res
               .status(200)
-              .json({ message: 'profile created', profile: updated[0] });
+              .json({ message: 'profile updated', profile: updated[0] });
           })
           .catch((err) => {
             res.status(500).json({
@@ -277,6 +277,7 @@ router.put('/', authRequired, function (req, res) {
  */
 router.delete('/:id', authRequired, function (req, res) {
   const id = req.params.id;
+
   try {
     Profiles.findById(id).then((profile) => {
       Profiles.remove(profile.id).then(() => {

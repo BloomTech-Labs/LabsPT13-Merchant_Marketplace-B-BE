@@ -24,10 +24,15 @@ const update = async (id, product) => {
     .returning('*');
 };
 
+const remove = async (id) => {
+  return await db('products').where({ id }).del();
+};
+
 module.exports = {
   findAll,
   findBy,
   findById,
   create,
   update,
+  remove,
 };
