@@ -2,10 +2,13 @@ const express = require('express');
 const authRequired = require('../middleware/authRequired');
 const router = express.Router();
 const Products = require('./productModel');
+const { findAll, findBy, update, remove } = require('../globalDbModels');
+
+const TABLE_NAME = 'products';
 
 // retrieve all existing products
 router.get('/', authRequired, (req, res) => {
-  Products.findAll()
+  findAll(TABLE_NAME)
     .then((products) => {
       res.status(200).json(products);
     })
@@ -20,7 +23,7 @@ router.get('/:id', authRequired, async (req, res) => {
   const { id } = req.params;
 
   try {
-    let product = await Products.findById(id);
+    let product = await findBy(TABLE_NAME, { id });
 
     product
       ? res.status(200).json(product)
@@ -57,13 +60,13 @@ router.put('/', authRequired, async (req, res) => {
 
   if (Object.keys(product).length > 0) {
     const id = product.id || 0;
-    Products.findById(id)
-      .then(Products.update(id, product))
+    findBy(TABLE_NAME, { id })
+      .then(update(TABLE_NAME, product, { id }))
       .then((updated) => {
         res.status(200).json({ message: 'Product updated', product: updated });
       })
       .catch((err) => {
-        es.status(500).json({
+        res.status(500).json({
           message: `Could not update product '${id}'`,
           error: err.message,
         });
@@ -77,18 +80,17 @@ router.delete('/:id', authRequired, async (req, res) => {
   const id = req.params.id;
 
   try {
-    let product = await Products.findById(id);
+    let product = await findBy(TABLE_NAME, { id });
 
     if (Object.keys(product).length > 0) {
-      Products.remove(product.id).then(() => {
+      remove(TABLE_NAME, { id: product.id }).then(() => {
         res
           .status(200)
           .json({ message: `Product '${id}' was deleted.`, product });
       });
     } else {
-      res.status(401).json({
+      res.status(404).json({
         message: `Could not find product with ID: ${id}`,
-        error: err.message,
       });
     }
   } catch (err) {

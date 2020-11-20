@@ -1,7 +1,10 @@
 const express = require('express');
+const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const Profiles = require('./profileModel');
-const router = express.Router();
+const { findAll, findBy, update, remove } = require('../globalDbModels');
+
+const TABLE_NAME = 'profiles';
 
 /**
  * @swagger
@@ -63,7 +66,7 @@ const router = express.Router();
  *        $ref: '#/components/responses/UnauthorizedError'
  */
 router.get('/', authRequired, function (req, res) {
-  Profiles.findAll()
+  findAll(TABLE_NAME)
     .then((profiles) => {
       res.status(200).json(profiles);
     })
@@ -110,7 +113,7 @@ router.get('/', authRequired, function (req, res) {
  */
 router.get('/:id', authRequired, function (req, res) {
   const id = String(req.params.id);
-  Profiles.findById(id)
+  findBy(TABLE_NAME, { id })
     .then((profile) => {
       if (profile) {
         res.status(200).json(profile);
@@ -164,7 +167,7 @@ router.post('/', authRequired, async (req, res) => {
   if (profile) {
     const id = profile.id || 0;
     try {
-      await Profiles.findById(id).then(async (pf) => {
+      await findBy(TABLE_NAME, { id }).then(async (pf) => {
         if (pf == undefined) {
           //profile not found so lets insert it
           await Profiles.create(profile).then((profile) =>
@@ -222,9 +225,9 @@ router.put('/', authRequired, function (req, res) {
   const profile = req.body;
   if (profile) {
     const id = profile.id || 0;
-    Profiles.findById(id)
+    findBy(TABLE_NAME, { id })
       .then(
-        Profiles.update(id, profile)
+        update(TABLE_NAME, profile, { id })
           .then((updated) => {
             res
               .status(200)
@@ -279,8 +282,8 @@ router.delete('/:id', authRequired, function (req, res) {
   const id = req.params.id;
 
   try {
-    Profiles.findById(id).then((profile) => {
-      Profiles.remove(profile.id).then(() => {
+    findBy(TABLE_NAME, { id }).then((profile) => {
+      remove(TABLE_NAME, { id: profile.id }).then(() => {
         res
           .status(200)
           .json({ message: `Profile '${id}' was deleted.`, profile: profile });

@@ -16,7 +16,7 @@ exports.seed = function (knex) {
           delivery_method: 'Local Pickup',
         },
         {
-          profile_id: '2j0epjkdhqo6wvkh0v7f',
+          profile_id: '00ulthapbErVUwVJy4x6',
           title: 'Rev',
           price: 12.99,
           description: 'Praesent id massa ',
@@ -26,7 +26,7 @@ exports.seed = function (knex) {
           delivery_method: 'Delivery',
         },
         {
-          profile_id: 'jhbgvwyejp81ds9jzuo9',
+          profile_id: '00ulthapbErVUwVJy4x6',
           title: 'Mrs',
           price: 12.99,
           description: 'Proin leo odio, ',
@@ -36,7 +36,7 @@ exports.seed = function (knex) {
           delivery_method: 'Local Pickup or Delivery',
         },
         {
-          profile_id: 'bv8tg9jvp9t1461zr7x1',
+          profile_id: '2j0epjkdhqo6wvkh0v7f',
           title: 'Honorable',
           price: 12.99,
           description: 'Sed sagittis. Nam congue',
@@ -46,7 +46,7 @@ exports.seed = function (knex) {
           delivery_method: 'Local Pickup',
         },
         {
-          profile_id: 'pv2864sfheem5j4o2vhs',
+          profile_id: '2j0epjkdhqo6wvkh0v7f',
           title: 'Rev',
           price: 12.99,
           description: 'In hac habitasse platea',
