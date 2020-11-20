@@ -1,5 +1,4 @@
 const express = require('express');
-const { restart } = require('nodemon');
 const authRequired = require('../middleware/authRequired');
 const router = express.Router();
 const Products = require('./productModel');
