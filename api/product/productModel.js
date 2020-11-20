@@ -9,7 +9,7 @@ const findBy = (filter) => {
 };
 
 const findById = async (id) => {
-  return db('products').where({ id }).first().select('*');
+  return db('products').where({ id }).first();
 };
 
 const create = async (product) => {
