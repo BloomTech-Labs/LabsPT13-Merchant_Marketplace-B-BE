@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
+const validateId = require('../middleware/validateId');
 const Profiles = require('./profileModel');
 const { findAll, findBy, update, remove } = require('../globalDbModels');
 
@@ -111,19 +112,8 @@ router.get('/', authRequired, function (req, res) {
  *      404:
  *        description: 'Profile not found'
  */
-router.get('/:id', authRequired, function (req, res) {
-  const id = String(req.params.id);
-  findBy(TABLE_NAME, { id })
-    .then((profile) => {
-      if (profile) {
-        res.status(200).json(profile);
-      } else {
-        res.status(404).json({ error: 'ProfileNotFound' });
-      }
-    })
-    .catch((err) => {
-      res.status(500).json({ error: err.message });
-    });
+router.get('/:id', authRequired, validateId(TABLE_NAME), (req, res) => {
+  res.status(200).json(req.profile);
 });
 
 /**
@@ -278,23 +268,24 @@ router.put('/', authRequired, function (req, res) {
  *                profile:
  *                  $ref: '#/components/schemas/Profile'
  */
-router.delete('/:id', authRequired, function (req, res) {
-  const id = req.params.id;
-
-  try {
-    findBy(TABLE_NAME, { id }).then((profile) => {
-      remove(TABLE_NAME, { id: profile.id }).then(() => {
-        res
-          .status(200)
-          .json({ message: `Profile '${id}' was deleted.`, profile: profile });
+router.delete(
+  '/:id',
+  authRequired,
+  validateId(TABLE_NAME),
+  async (req, res) => {
+    try {
+      await remove(TABLE_NAME, { id: req.profile.id });
+      res.status(200).json({
+        message: `Profile '${req.profile.id}' was deleted.`,
+        profile: req.profile,
       });
-    });
-  } catch (err) {
-    res.status(500).json({
-      message: `Could not delete profile with ID: ${id}`,
-      error: err.message,
-    });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete profile with ID: ${req.profile.id}`,
+        error: err.message,
+      });
+    }
   }
-});
+);
 
 module.exports = router;
