@@ -3,7 +3,7 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findAll, findBy, update, remove } = require('../globalDbModels');
+const { findBy, update, remove } = require('../globalDbModels');
 const Orders = require('./ordersModel');
 
 const TABLE_NAME = 'orders';
