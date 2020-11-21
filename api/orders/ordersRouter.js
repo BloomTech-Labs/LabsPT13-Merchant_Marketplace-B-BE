@@ -3,7 +3,7 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findAll, findBy, update } = require('../globalDbModels');
+const { findAll, findBy, update, remove } = require('../globalDbModels');
 const Orders = require('./ordersModel');
 
 const TABLE_NAME = 'orders';
@@ -50,6 +50,27 @@ router.put(
     } catch (err) {
       res.status(500).json({
         message: `Could not update order with ID: ${req.order.id}`,
+        error: err.message,
+      });
+    }
+  }
+);
+
+router.delete(
+  '/:id',
+  authRequired,
+  validateId(TABLE_NAME),
+  async (req, res) => {
+    try {
+      await remove(TABLE_NAME, { id: req.order.id });
+
+      res.status(200).json({
+        message: `Order '${req.order.id}' was deleted.`,
+        order: req.order,
+      });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not delete order with ID: ${req.order.id}`,
         error: err.message,
       });
     }
