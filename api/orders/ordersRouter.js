@@ -8,15 +8,12 @@ const Orders = require('./ordersModel');
 
 const TABLE_NAME = 'orders';
 
-router.get('/', authRequired, async (req, res) => {
-  const orders = await findAll(TABLE_NAME);
-  res.status(200).json(orders);
-});
-
+// retrieve order by ID
 router.get('/:id', authRequired, validateId(TABLE_NAME), (req, res) => {
   res.status(200).json(req.order);
 });
 
+// create a new order
 router.post('/', authRequired, validateBody, async (req, res) => {
   try {
     const profile = await findBy('profiles', { id: req.body.profile_id });
@@ -36,6 +33,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
   }
 });
 
+// update the specified order
 router.put(
   '/:id',
   authRequired,
@@ -48,6 +46,7 @@ router.put(
       const updated = await update(TABLE_NAME, changes, { id: req.order.id });
       res.status(200).json({ message: 'Order updated', order: updated });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: `Could not update order with ID: ${req.order.id}`,
         error: err.message,
@@ -56,6 +55,7 @@ router.put(
   }
 );
 
+// delete the specified order
 router.delete(
   '/:id',
   authRequired,
@@ -69,6 +69,7 @@ router.delete(
         order: req.order,
       });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: `Could not delete order with ID: ${req.order.id}`,
         error: err.message,
