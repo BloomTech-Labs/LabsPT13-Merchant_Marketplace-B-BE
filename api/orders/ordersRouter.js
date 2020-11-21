@@ -2,11 +2,38 @@ const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
+const validateBody = require('../middleware/validateBody');
+const { findAll, findBy } = require('../globalDbModels');
+const Orders = require('./ordersModel');
 
 const TABLE_NAME = 'orders';
 
+router.get('/', authRequired, async (req, res) => {
+  const orders = await findAll(TABLE_NAME);
+  res.status(200).json(orders);
+});
+
 router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
   res.status(200).json(req.order);
+});
+
+router.post('/', authRequired, validateBody, async (req, res) => {
+  try {
+    const profile = await findBy('profiles', { id: req.body.profile_id });
+    const product = await findBy('products', { id: req.body.product_id });
+
+    if (profile && product) {
+      const inserted = await Orders.create(req.body);
+      res.status(201).json({ message: 'Order created', order: inserted[0] });
+    } else {
+      res
+        .status(404)
+        .json({ message: 'Could not find the specified product or profile' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
 });
 
 module.exports = router;
