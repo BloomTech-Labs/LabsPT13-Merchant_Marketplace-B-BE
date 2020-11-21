@@ -10,13 +10,14 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     tbl
-      .integer('starting_quantity')
-      .inTable('products')
-      .onDelete('CASCADE')
+      .integer('order_id')
+      .references('id')
+      .inTable('orders')
       .onUpdate('CASCADE');
 
-    tbl.integer('number_of_sales').onDelete('CASCADE').onUpdate('CASCADE');
-
-    tbl.primary(['product_id']);
+    tbl.primary(['product_id', 'order_id']);
   });
+};
+exports.down = function (knex) {
+  return knex.schema.dropTableIfExists('Products_sales');
 };
