@@ -3,7 +3,7 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findAll, findBy } = require('../globalDbModels');
+const { findAll, findBy, update } = require('../globalDbModels');
 const Orders = require('./ordersModel');
 
 const TABLE_NAME = 'orders';
@@ -13,7 +13,7 @@ router.get('/', authRequired, async (req, res) => {
   res.status(200).json(orders);
 });
 
-router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
+router.get('/:id', authRequired, validateId(TABLE_NAME), (req, res) => {
   res.status(200).json(req.order);
 });
 
@@ -35,5 +35,25 @@ router.post('/', authRequired, validateBody, async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 });
+
+router.put(
+  '/:id',
+  authRequired,
+  validateId(TABLE_NAME),
+  validateBody,
+  async (req, res) => {
+    const changes = { ...req.body, updated_at: new Date().toISOString() };
+
+    try {
+      const updated = await update(TABLE_NAME, changes, { id: req.order.id });
+      res.status(200).json({ message: 'Order updated', order: updated });
+    } catch (err) {
+      res.status(500).json({
+        message: `Could not update order with ID: ${req.order.id}`,
+        error: err.message,
+      });
+    }
+  }
+);
 
 module.exports = router;
