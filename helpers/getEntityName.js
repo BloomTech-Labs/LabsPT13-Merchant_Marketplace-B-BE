@@ -6,8 +6,8 @@ const getEntityName = (tableName) => {
       return 'product';
     case 'orders':
       return 'order';
-    case 'tags':
-      return 'tag';
+    case 'users-carts':
+      return 'cart_item';
     default:
       return 'review';
   }
