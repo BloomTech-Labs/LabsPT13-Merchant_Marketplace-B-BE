@@ -43,6 +43,8 @@ router.post('/', authRequired, validateBody, async (req, res) => {
     const product = await findBy('products', { id: product_id });
 
     if (profile && product) {
+      await create({ profile_id, product_id });
+      res.status(201).json({ message: 'Item created', profile, product });
     } else {
       res
         .status(404)
