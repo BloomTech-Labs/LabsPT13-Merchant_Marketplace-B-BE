@@ -1,5 +1,9 @@
 const db = require('../../data/db-config');
 
+const getAll = () => {
+  return db('users-carts');
+};
+
 const findAll = (profile_id) => {
   return db('users-carts as uc')
     .join('products as pd', 'uc.product_id', 'pd.id')
@@ -8,4 +12,8 @@ const findAll = (profile_id) => {
     .where({ 'uc.profile_id': profile_id });
 };
 
-module.exports = { findAll };
+const create = (item) => {
+  return db('users-carts').insert(item).returning('*');
+};
+
+module.exports = { getAll, findAll, create };
