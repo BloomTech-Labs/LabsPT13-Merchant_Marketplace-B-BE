@@ -77,7 +77,7 @@ router.delete('/:profile_id/:product_id', authRequired, async (req, res) => {
 
     if (item) {
       await remove('users-carts', { profile_id, product_id });
-      res.status(200).json({ message: 'Cart item deleted' });
+      res.status(200).json({ message: 'Cart item removed' });
     } else {
       res.status(404).json({
         message: 'Could not find the specified cart item',

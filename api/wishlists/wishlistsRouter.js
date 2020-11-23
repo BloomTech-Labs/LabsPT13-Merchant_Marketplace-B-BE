@@ -69,4 +69,28 @@ router.post('/', authRequired, validateBody, async (req, res) => {
   }
 });
 
+// remove an item from the user's wishlist
+router.delete('/:profile_id/:product_id', authRequired, async (req, res) => {
+  const { profile_id = '', product_id = 0 } = req.params;
+
+  try {
+    const item = await findItem(profile_id, product_id);
+
+    if (item) {
+      await remove('wishlists', { profile_id, product_id });
+      res.status(200).json({ message: 'Wishlist item removed' });
+    } else {
+      res.status(404).json({
+        message: 'Could not find the specified wishlist item',
+      });
+    }
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({
+      message: `Could not remove the item from the user's wishlist at the moment`,
+      error: err.message,
+    });
+  }
+});
+
 module.exports = router;
