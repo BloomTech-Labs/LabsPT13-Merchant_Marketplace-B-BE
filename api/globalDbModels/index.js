@@ -14,7 +14,7 @@ const update = async (tableName, changes, filter) => {
 };
 
 const remove = (tableName, filter) => {
-  return db(tableName).delete().where(filter);
+  return db(tableName).where(filter).delete();
 };
 
 module.exports = { findAll, findBy, update, remove };
