@@ -2,16 +2,22 @@ const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
-const { findBy, update, remove } = require('../globalDbModels');
+const { findAll } = require('./cartsModel');
+const db = require('../../data/db-config');
 
-const TABLE_NAME = 'users-carts';
+router.get('/', authRequired, async (req, res) => {
+  const carts = await db('users-carts');
+  res.status(200).json(carts);
+});
 
-router.get('/:profile_id', async (req, res) => {
-  const { profile_id = 0 } = req.params;
+router.get('/:profile_id', authRequired, async (req, res) => {
+  const { profile_id = '' } = req.params;
 
   try {
-    const profile = await findBy('profiles', { id: profile_id });
-    if (profile) {
+    const items = await findAll(profile_id);
+
+    if (items.length) {
+      res.status(200).json(items);
     } else {
       res.status(404).json({
         message: `Could not find the specified profile`,

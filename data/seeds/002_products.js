@@ -32,7 +32,7 @@ exports.seed = function (knex) {
           delivery_method: 'Delivery',
         },
         {
-          profile_id: '00ulthapbErVUwVJy4x6',
+          profile_id: 'bv8tg9jvp9t1461zr7x1',
           title: 'Mrs',
           img:
             'https://cdn.pixabay.com/photo/2016/11/22/23/44/buildings-1851246__480.jpg',

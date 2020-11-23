@@ -1,35 +1,14 @@
 const db = require('../../data/db-config');
-
-const findAll = async () => {
-  return await db('profiles');
-};
-
-const findBy = (filter) => {
-  return db('profiles').where(filter);
-};
-
-const findById = async (id) => {
-  return db('profiles').where({ id }).first().select('*');
-};
+const { findBy } = require('../globalDbModels');
 
 const create = async (profile) => {
   return db('profiles').insert(profile).returning('*');
 };
 
-const update = (id, profile) => {
-  return db('profiles')
-    .where({ id: id })
-    .first()
-    .update(profile)
-    .returning('*');
-};
-
-const remove = async (id) => {
-  return await db('profiles').where({ id }).del();
-};
-
 const findOrCreateProfile = async (profileObj) => {
-  const foundProfile = await findById(profileObj.id).then((profile) => profile);
+  const foundProfile = await findBy('profiles', { id: profileObj.id }).then(
+    (profile) => profile
+  );
   if (foundProfile) {
     return foundProfile;
   } else {
@@ -39,12 +18,4 @@ const findOrCreateProfile = async (profileObj) => {
   }
 };
 
-module.exports = {
-  findAll,
-  findBy,
-  findById,
-  create,
-  update,
-  remove,
-  findOrCreateProfile,
-};
+module.exports = { create, findOrCreateProfile };
