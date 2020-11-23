@@ -1,5 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('saved-products', function (table) {
+  return knex.schema.createTable('wishlists', function (table) {
     table
       .string('profile_id')
       .notNullable()
@@ -20,5 +20,5 @@ exports.up = function (knex) {
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('saved-products');
+  return knex.schema.dropTableIfExists('wishlists');
 };

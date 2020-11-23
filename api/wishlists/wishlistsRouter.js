@@ -6,7 +6,7 @@ const validateBody = require('../middleware/validateBody');
 const { findBy, findAll, remove } = require('../globalDbModels');
 
 router.get('/', authRequired, async (req, res) => {
-  const savedProducts = await findAll('saved-products');
+  const savedProducts = await findAll('wishlists');
   res.status(200).json(savedProducts);
 });
 
