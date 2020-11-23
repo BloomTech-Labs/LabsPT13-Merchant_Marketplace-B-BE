@@ -52,7 +52,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
 
       if (profile && product) {
         await create({ profile_id, product_id });
-        res.status(201).json({ message: 'Item created' });
+        res.status(201).json({ message: 'Item added to cart' });
       } else {
         res.status(404).json({
           message: 'Could not find the specified profile or product.',

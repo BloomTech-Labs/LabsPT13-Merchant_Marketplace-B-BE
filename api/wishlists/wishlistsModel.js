@@ -12,4 +12,12 @@ const findAll = (profile_id) => {
     .where({ 'wl.profile_id': profile_id });
 };
 
-module.exports = { getAll, findAll };
+const findItem = (profile_id, product_id) => {
+  return db('wishlists').where({ profile_id, product_id }).first();
+};
+
+const create = (item) => {
+  return db('wishlists').insert(item).returning('*');
+};
+
+module.exports = { getAll, findAll, findItem, create };
