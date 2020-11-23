@@ -16,10 +16,10 @@ router.get('/:profile_id', authRequired, async (req, res) => {
   const { profile_id = '' } = req.params;
 
   try {
-    const items = await findAll(profile_id);
+    const cartItems = await findAll(profile_id);
 
-    if (items.length) {
-      res.status(200).json(items);
+    if (cartItems.length) {
+      res.status(200).json(cartItems);
     } else {
       res.status(404).json({
         message: `Could not find the specified profile`,
