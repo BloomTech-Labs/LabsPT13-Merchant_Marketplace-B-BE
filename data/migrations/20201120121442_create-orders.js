@@ -14,9 +14,7 @@ exports.up = function (knex) {
       .unsigned()
       .notNullable()
       .references('id')
-      .inTable('products')
-      .onDelete('CASCADE')
-      .onUpdate('CASCADE');
+      .inTable('products');
 
     table.integer('quantity').notNullable();
     table.float('total_price').notNullable();
