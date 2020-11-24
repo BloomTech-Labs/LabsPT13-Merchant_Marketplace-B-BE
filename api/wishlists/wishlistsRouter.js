@@ -2,13 +2,20 @@ const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
-const { getAll, findAll, findItem, create } = require('./wishlistsModel');
 
-const { findBy, remove } = require('../globalDbModels');
+const {
+  findAll,
+  findProfileItems,
+  findBy,
+  create,
+  remove,
+} = require('../globalDbModels');
+
+const TABLE_NAME = 'wishlists';
 
 // for testing purposes
-router.get('/', authRequired, async (req, res) => {
-  const savedProducts = await getAll();
+router.get('/', async (req, res) => {
+  const savedProducts = await findAll(TABLE_NAME);
   res.status(200).json(savedProducts);
 });
 
@@ -17,10 +24,10 @@ router.get('/:profile_id', authRequired, async (req, res) => {
   const { profile_id = '' } = req.params;
 
   try {
-    const savedItems = await findAll(profile_id);
+    const wishList = await findProfileItems(TABLE_NAME, profile_id);
 
-    if (savedItems.length) {
-      res.status(200).json(savedItems);
+    if (wishList.length) {
+      res.status(200).json(wishList);
     } else {
       res.status(404).json({
         message: `Could not find the specified profile`,
@@ -41,7 +48,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
 
   try {
     // check to see item already exists in wishlist
-    const item = await findItem(profile_id, product_id);
+    const item = await findBy(TABLE_NAME, { profile_id, product_id });
 
     if (item) {
       res
@@ -52,7 +59,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
       const product = await findBy('products', { id: product_id });
 
       if (profile && product) {
-        await create({ profile_id, product_id });
+        await create(TABLE_NAME, { profile_id, product_id });
         res.status(201).json({ message: 'Item saved to wishlist' });
       } else {
         res.status(404).json({
@@ -70,11 +77,11 @@ router.post('/', authRequired, validateBody, async (req, res) => {
 });
 
 // remove an item from the user's wishlist
-router.delete('/:profile_id/:product_id', authRequired, async (req, res) => {
+router.delete('/:profile_id/:product_id', async (req, res) => {
   const { profile_id = '', product_id = 0 } = req.params;
 
   try {
-    const item = await findItem(profile_id, product_id);
+    const item = await findBy(TABLE_NAME, { profile_id, product_id });
 
     if (item) {
       await remove('wishlists', { profile_id, product_id });

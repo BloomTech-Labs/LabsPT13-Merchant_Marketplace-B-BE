@@ -2,12 +2,19 @@ const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
-const { getAll, findAll, findItem, create } = require('./cartsModel');
-const { findBy, remove } = require('../globalDbModels');
+const {
+  findProfileItems,
+  findAll,
+  findBy,
+  create,
+  remove,
+} = require('../globalDbModels');
+
+const TABLE_NAME = 'users-carts';
 
 // for testing purposes
-router.get('/', authRequired, async (req, res) => {
-  const carts = await getAll();
+router.get('/', async (req, res) => {
+  const carts = await findAll(TABLE_NAME);
   res.status(200).json(carts);
 });
 
@@ -16,7 +23,7 @@ router.get('/:profile_id', authRequired, async (req, res) => {
   const { profile_id = '' } = req.params;
 
   try {
-    const cartItems = await findAll(profile_id);
+    const cartItems = await findProfileItems(TABLE_NAME, profile_id);
 
     if (cartItems.length) {
       res.status(200).json(cartItems);
@@ -40,7 +47,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
 
   try {
     // check to see item already exists in cart
-    const item = await findItem(profile_id, product_id);
+    const item = await findBy(TABLE_NAME, { profile_id, product_id });
 
     if (item) {
       res
@@ -51,7 +58,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
       const product = await findBy('products', { id: product_id });
 
       if (profile && product) {
-        await create({ profile_id, product_id });
+        await create(TABLE_NAME, { profile_id, product_id });
         res.status(201).json({ message: 'Item added to cart' });
       } else {
         res.status(404).json({
@@ -73,10 +80,10 @@ router.delete('/:profile_id/:product_id', authRequired, async (req, res) => {
   const { profile_id = '', product_id = 0 } = req.params;
 
   try {
-    const item = await findItem(profile_id, product_id);
+    const item = await findBy(TABLE_NAME, { profile_id, product_id });
 
     if (item) {
-      await remove('users-carts', { profile_id, product_id });
+      await remove(TABLE_NAME, { profile_id, product_id });
       res.status(200).json({ message: 'Cart item removed' });
     } else {
       res.status(404).json({
