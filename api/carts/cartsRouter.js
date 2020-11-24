@@ -10,7 +10,7 @@ const {
   remove,
 } = require('../globalDbModels');
 
-const TABLE_NAME = 'users-carts';
+const TABLE_NAME = 'carts';
 
 // for testing purposes
 router.get('/', async (req, res) => {

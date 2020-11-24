@@ -15,8 +15,8 @@ const TABLE_NAME = 'wishlists';
 
 // for testing purposes
 router.get('/', async (req, res) => {
-  const savedProducts = await findAll(TABLE_NAME);
-  res.status(200).json(savedProducts);
+  const wishLists = await findAll(TABLE_NAME);
+  res.status(200).json(wishLists);
 });
 
 // retrieve user's saved items
