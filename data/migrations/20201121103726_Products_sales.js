@@ -9,13 +9,11 @@ exports.up = function (knex) {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
 
-    tbl
-      .integer('order_id')
-      .references('id')
-      .inTable('orders')
-      .onUpdate('CASCADE');
+    tbl.integer('starting_quantity').onDelete('CASCADE').onUpdate('CASCADE');
 
-    tbl.primary(['product_id', 'order_id']);
+    tbl.integer('num_sales').onUpdate('CASCADE');
+
+    tbl.primary('product_id');
   });
 };
 exports.down = function (knex) {
