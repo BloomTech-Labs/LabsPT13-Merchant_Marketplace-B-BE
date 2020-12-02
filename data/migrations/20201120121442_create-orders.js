@@ -10,6 +10,7 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     table
+
       .integer('product_id')
       .unsigned()
       .notNullable()
