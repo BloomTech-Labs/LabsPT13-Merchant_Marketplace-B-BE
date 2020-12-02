@@ -1,20 +1,32 @@
 const db = require('../../data/db-config');
 
-const findAll = (tableName) => {
-  return db(tableName);
+const findAll = (table_name) => {
+  return db(table_name);
 };
 
-const findBy = (tableName, filter) => {
-  return db(tableName).where(filter).first();
+const findProfileItems = (table_name, profile_id) => {
+  return db(`${table_name} as tbl`)
+    .join('profiles as pf', 'tbl.profile_id', 'pf.id')
+    .join('products as pd', 'tbl.product_id', 'pd.id')
+    .select('pd.*')
+    .where({ 'tbl.profile_id': profile_id });
 };
 
-const update = async (tableName, changes, filter) => {
-  await db(tableName).update(changes).where(filter);
-  return findBy(tableName, filter);
+const findBy = (table_name, filter) => {
+  return db(table_name).where(filter).first();
 };
 
-const remove = (tableName, filter) => {
-  return db(tableName).where(filter).delete();
+const create = (table_name, item) => {
+  return db(table_name).insert(item).returning('*');
 };
 
-module.exports = { findAll, findBy, update, remove };
+const update = async (table_name, changes, filter) => {
+  await db(table_name).update(changes).where(filter);
+  return findBy(table_name, filter);
+};
+
+const remove = (table_name, filter) => {
+  return db(table_name).where(filter).delete();
+};
+
+module.exports = { findAll, findProfileItems, findBy, create, update, remove };

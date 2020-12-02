@@ -1,6 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('orders', function (table) {
-    table.increments();
+  return knex.schema.createTable('wishlists', function (table) {
     table
       .string('profile_id')
       .notNullable()
@@ -10,19 +9,16 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     table
-
       .integer('product_id')
       .unsigned()
       .notNullable()
       .references('id')
       .inTable('products');
 
-    table.integer('quantity').notNullable();
-    table.float('total_price').notNullable();
-    table.timestamps(true, true);
+    table.primary(['profile_id', 'product_id']);
   });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('orders');
+  return knex.schema.dropTableIfExists('wishlists');
 };

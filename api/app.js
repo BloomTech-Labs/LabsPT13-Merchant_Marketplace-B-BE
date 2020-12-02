@@ -24,6 +24,7 @@ const profilesRouter = require('./profiles/profilesRouter');
 const productsRouter = require('./products/productsRouter');
 const ordersRouter = require('./orders/ordersRouter');
 const cartsRouter = require('./carts/cartsRouter');
+const wishlistsRouter = require('./wishlists/wishlistsRouter');
 const reviewsRouter = require('./reviews/reviewsRouter');
 const products_salesRouter = require('./products_sales/products_salesRouter');
 
@@ -57,6 +58,7 @@ app.use(['/profile', '/profiles'], profilesRouter);
 app.use('/products', productsRouter);
 app.use('/orders', ordersRouter);
 app.use('/carts', cartsRouter);
+app.use('/wishlists', wishlistsRouter);
 app.use('/reviews', reviewsRouter);
 app.use('/products_sales', products_salesRouter);
 
