@@ -10,7 +10,6 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     tbl.integer('starting_quantity').notNullable();
-
     tbl.integer('num_sales').notNullable();
   });
 };
