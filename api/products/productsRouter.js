@@ -61,6 +61,7 @@ router.put(
       const updated = await update(TABLE_NAME, changes, { id: req.product.id });
       res.status(200).json({ message: 'Product updated', product: updated });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: `Could not update product with ID: ${req.product.id}`,
         error: err.message,
@@ -83,6 +84,7 @@ router.delete(
         product: req.product,
       });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: `Could not delete product with ID: ${req.product.id}`,
         error: err.message,

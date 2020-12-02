@@ -170,9 +170,9 @@ router.post('/', authRequired, validateBody, async (req, res) => {
         res.status(400).json({ message: 'profile already exists' });
       }
     });
-  } catch (e) {
-    console.error(e);
-    res.status(500).json({ message: e.message });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
   }
 });
 /**
@@ -224,6 +224,7 @@ router.put(
 
       res.status(200).json({ message: 'profile updated', profile: updated });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: `Could not update profile with ID: '${req.profile.id}'`,
         error: err.message,
@@ -273,6 +274,7 @@ router.delete(
         profile: req.profile,
       });
     } catch (err) {
+      console.log(err);
       res.status(500).json({
         message: `Could not delete profile with ID: ${req.profile.id}`,
         error: err.message,
