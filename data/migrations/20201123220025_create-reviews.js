@@ -1,6 +1,5 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('orders', function (table) {
-    table.increments();
+  return knex.schema.createTable('reviews', function (table) {
     table
       .string('profile_id')
       .notNullable()
@@ -16,12 +15,12 @@ exports.up = function (knex) {
       .references('id')
       .inTable('products');
 
-    table.integer('quantity').notNullable();
-    table.float('total_price').notNullable();
-    table.timestamps(true, true);
+    table.integer('rate').notNullable();
+    table.string('description').notNullable();
+    table.primary(['profile_id', 'product_id']);
   });
 };
 
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('orders');
+  return knex.schema.dropTableIfExists('reviews');
 };
