@@ -62,7 +62,6 @@ app.use('/products_sales', products_salesRouter);
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
 // error handler
 app.use(function (err, req, res, next) {
   if (err instanceof createError.HttpError) {
