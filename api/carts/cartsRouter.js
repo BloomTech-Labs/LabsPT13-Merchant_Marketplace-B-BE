@@ -4,7 +4,6 @@ const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
 const {
   findProfileItems,
-  findAll,
   findBy,
   create,
   remove,
