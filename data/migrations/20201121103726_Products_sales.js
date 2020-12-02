@@ -1,7 +1,7 @@
 exports.up = function (knex) {
-  return knex.schema.createTable('Products_sales', (tbl) => {
+  return knex.schema.createTable('products_sales', (tbl) => {
     tbl
-      .integer('Product_id')
+      .integer('product_id')
       .unsigned()
       .notNullable()
       .references('id')
@@ -9,13 +9,11 @@ exports.up = function (knex) {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
 
-    tbl.integer('starting_quantity').onDelete('CASCADE').onUpdate('CASCADE');
+    tbl.integer('starting_quantity').notNullable();
 
-    tbl.integer('num_sales').onUpdate('CASCADE');
-
-    tbl.primary('product_id');
+    tbl.integer('num_sales').notNullable();
   });
 };
 exports.down = function (knex) {
-  return knex.schema.dropTableIfExists('Products_sales');
+  return knex.schema.dropTableIfExists('products_sales');
 };
