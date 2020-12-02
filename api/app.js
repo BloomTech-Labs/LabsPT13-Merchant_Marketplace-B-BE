@@ -24,7 +24,7 @@ const profilesRouter = require('./profiles/profilesRouter');
 const productsRouter = require('./products/productsRouter');
 const ordersRouter = require('./orders/ordersRouter');
 const reviewsRouter = require('./reviews/reviewsRouter');
-const products_salesRouter = require('./products_sales/products_salesRouter')
+const products_salesRouter = require('./products_sales/products_salesRouter');
 
 const app = express();
 
@@ -58,12 +58,10 @@ app.use('/orders', ordersRouter);
 app.use('/reviews', reviewsRouter);
 app.use('/products_sales', products_salesRouter);
 
-
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
 // error handler
 app.use(function (err, req, res, next) {
   if (err instanceof createError.HttpError) {
