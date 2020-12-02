@@ -26,6 +26,7 @@ const ordersRouter = require('./orders/ordersRouter');
 const cartsRouter = require('./carts/cartsRouter');
 const wishlistsRouter = require('./wishlists/wishlistsRouter');
 const reviewsRouter = require('./reviews/reviewsRouter');
+const products_salesRouter = require('./products_sales/products_salesRouter');
 
 const app = express();
 
@@ -59,12 +60,12 @@ app.use('/orders', ordersRouter);
 app.use('/carts', cartsRouter);
 app.use('/wishlists', wishlistsRouter);
 app.use('/reviews', reviewsRouter);
+app.use('/products_sales', products_salesRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));
 });
-
 // error handler
 app.use(function (err, req, res, next) {
   if (err instanceof createError.HttpError) {

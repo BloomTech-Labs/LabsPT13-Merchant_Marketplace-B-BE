@@ -12,12 +12,6 @@ const {
 
 const TABLE_NAME = 'carts';
 
-// for testing purposes
-router.get('/', async (req, res) => {
-  const carts = await findAll(TABLE_NAME);
-  res.status(200).json(carts);
-});
-
 // retrieve user's cart items
 router.get('/:profile_id', authRequired, async (req, res) => {
   const { profile_id = '' } = req.params;
