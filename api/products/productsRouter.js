@@ -36,7 +36,7 @@ router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
 });
 
 // create a new product
-router.post('/', validateBody, async (req, res) => {
+router.post('/', authRequired, validateBody, async (req, res) => {
   const files = req.files;
   const images = Object.keys(files);
   const product = req.body;
@@ -59,6 +59,7 @@ router.post('/', validateBody, async (req, res) => {
       .json({ message: 'Product created', product: newProduct[0] });
   } catch (err) {
     console.error(err);
+    res.status(500).json({ message: err.message });
   }
 });
 
