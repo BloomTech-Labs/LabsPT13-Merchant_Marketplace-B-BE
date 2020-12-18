@@ -10,6 +10,7 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     table.string('name').notNullable();
+    table.string('type').notNullable();
     table.binary('image').notNullable();
   });
 };
