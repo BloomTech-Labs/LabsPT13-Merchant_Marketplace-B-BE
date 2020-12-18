@@ -4,7 +4,7 @@ const Products = require('./productsModel');
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findAll, update, remove } = require('../globalDbModels');
+const { findAll, create, update, remove } = require('../globalDbModels');
 
 const TABLE_NAME = 'products';
 
@@ -36,7 +36,7 @@ router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
 });
 
 // create a new product
-router.post('/', authRequired, validateBody, async (req, res) => {
+router.post('/', validateBody, async (req, res) => {
   const product = req.body;
 
   try {
@@ -50,18 +50,24 @@ router.post('/', authRequired, validateBody, async (req, res) => {
 
 // create products images
 router.post('/images', async (req, res) => {
-  const files = req;
+  const { name, data } = req.files.image;
+  const { product_id } = req.body;
 
-  console.log({ files });
+  try {
+    if (name && data && product_id) {
+      const createdImage = await create('products_images', {
+        name,
+        image: data,
+        product_id: Number(product_id),
+      });
 
-  res.status(200).json({ files });
-
-  // if (name && data) {
-  //   // store to database
-  //   res.status(200).json({ name, data });
-  // } else {
-  //   res.status(400).json({ message: 'NO DATA' });
-  // }
+      res.status(201).json({ message: 'Image created', createdImage });
+    } else {
+      res.status(400).json({ message: 'Storing image failed' });
+    }
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // update the give product
