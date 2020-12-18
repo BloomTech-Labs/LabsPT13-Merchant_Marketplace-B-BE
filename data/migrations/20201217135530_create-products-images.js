@@ -8,6 +8,9 @@ exports.up = function (knex) {
       .inTable('products')
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
+
+    table.string('name').notNullable();
+    table.binary('image').notNullable();
   });
 };
 

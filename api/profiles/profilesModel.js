@@ -5,16 +5,21 @@ const create = async (profile) => {
   return db('profiles').insert(profile).returning('*');
 };
 
-const findOrCreateProfile = async (profileObj) => {
-  const foundProfile = await findBy('profiles', { id: profileObj.id }).then(
-    (profile) => profile
-  );
-  if (foundProfile) {
-    return foundProfile;
-  } else {
-    return await create(profileObj).then((newProfile) => {
-      return newProfile ? newProfile[0] : newProfile;
-    });
+const findOrCreateProfile = async (id) => {
+  try {
+    const foundProfile = await findBy('profiles', { id }).then(
+      (profile) => profile
+    );
+
+    if (foundProfile) {
+      return foundProfile;
+    } else {
+      return await create(profileObj).then((newProfile) => {
+        return newProfile ? newProfile[0] : newProfile;
+      });
+    }
+  } catch (err) {
+    console.error(err);
   }
 };
 
