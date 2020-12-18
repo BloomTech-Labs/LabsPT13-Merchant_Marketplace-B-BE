@@ -5,9 +5,9 @@ const create = async (profile) => {
   return db('profiles').insert(profile).returning('*');
 };
 
-const findOrCreateProfile = async (id) => {
+const findOrCreateProfile = async (profileObj) => {
   try {
-    const foundProfile = await findBy('profiles', { id }).then(
+    const foundProfile = await findBy('profiles', { id: profileObj.id }).then(
       (profile) => profile
     );
 
