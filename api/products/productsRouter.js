@@ -37,34 +37,26 @@ router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
 
 // create a new product
 router.post('/', validateBody, async (req, res) => {
+  const files = req.files;
+  const images = Object.keys(files);
   const product = req.body;
 
   try {
-    const created = await Products.create(product);
-    res.status(201).json({ message: 'Product created', product: created[0] });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
-});
+    const newProduct = await Products.create(product);
 
-// create products images
-router.post('/images', async (req, res) => {
-  const { name, data } = req.files.image;
-  const { product_id } = req.body;
-
-  try {
-    if (name && data && product_id) {
-      const createdImage = await create('products_images', {
+    // store all images
+    for (let i = 0; i < images.length; i++) {
+      const { name, data } = files[images[i]];
+      await create('products_images', {
         name,
         image: data,
-        product_id: Number(product_id),
+        product_id: newProduct[0].id,
       });
-
-      res.status(201).json({ message: 'Image created', createdImage });
-    } else {
-      res.status(400).json({ message: 'Storing image failed' });
     }
+
+    res
+      .status(201)
+      .json({ message: 'Product created', product: newProduct[0] });
   } catch (err) {
     console.error(err);
   }
