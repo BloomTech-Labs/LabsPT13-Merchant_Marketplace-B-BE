@@ -48,6 +48,22 @@ router.post('/', authRequired, validateBody, async (req, res) => {
   }
 });
 
+// create products images
+router.post('/images', async (req, res) => {
+  const files = req;
+
+  console.log({ files });
+
+  res.status(200).json({ files });
+
+  // if (name && data) {
+  //   // store to database
+  //   res.status(200).json({ name, data });
+  // } else {
+  //   res.status(400).json({ message: 'NO DATA' });
+  // }
+});
+
 // update the give product
 router.put(
   '/:id',
