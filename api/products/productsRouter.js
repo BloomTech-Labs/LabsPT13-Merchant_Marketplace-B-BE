@@ -4,14 +4,27 @@ const Products = require('./productsModel');
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findAll, create, update, remove } = require('../globalDbModels');
+const {
+  findAll,
+  create,
+  update,
+  remove,
+  findBy,
+} = require('../globalDbModels');
 
 const TABLE_NAME = 'products';
 
 // retrieve all existing products
 router.get('/', authRequired, async (req, res) => {
   try {
-    const products = await findAll(TABLE_NAME);
+    let products = await findAll(TABLE_NAME);
+    let images = await findAll('products_images');
+
+    products = products.map((p) => ({
+      ...p,
+      images: images.filter((img) => p.id === img.product_id),
+    }));
+
     res.status(200).json(products);
   } catch (err) {
     console.error(err);
@@ -46,9 +59,10 @@ router.post('/', authRequired, validateBody, async (req, res) => {
 
     // store all images
     for (let i = 0; i < images.length; i++) {
-      const { name, data } = files[images[i]];
+      const { name, mimetype, data } = files[images[i]];
       await create('products_images', {
         name,
+        type: mimetype,
         image: data,
         product_id: newProduct[0].id,
       });
