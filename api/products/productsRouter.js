@@ -5,13 +5,7 @@ const Products = require('./productsModel');
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const {
-  findAll,
-  create,
-  update,
-  remove,
-  findBy,
-} = require('../globalDbModels');
+const { findAll, create, update, remove } = require('../globalDbModels');
 
 const TABLE_NAME = 'products';
 
@@ -67,7 +61,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
       // store the image record
       await create('products_images', {
         product_id: newProduct[0].id,
-        image_id: uploadedResponse.asset_id,
+        image_id: uploadedResponse.public_id,
         name,
       });
     }
