@@ -50,31 +50,40 @@ router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
 
 // create a new product
 router.post('/', authRequired, validateBody, async (req, res) => {
-  const files = req.files;
-  const images = Object.keys(files);
-  const product = req.body;
-
   try {
-    const newProduct = await Products.create(product);
+    const product = req.body;
 
-    // store all images
-    for (let i = 0; i < images.length; i++) {
-      const { name, mimetype, data } = files[images[i]];
-      await create('products_images', {
-        name,
-        type: mimetype,
-        image: data,
-        product_id: newProduct[0].id,
-      });
-    }
-
-    res
-      .status(201)
-      .json({ message: 'Product created', product: newProduct[0] });
+    res.status(200).json({ product });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
+
+  // try {
+  //   const newProduct = await Products.create(product);
+
+  //   // store all images
+  //   for (let i = 0; i < images.length; i++) {
+  //     const { name, mimetype, data } = files[images[i]];
+
+  //     create('products_images', {
+  //       name,
+  //       type: mimetype,
+  //       image: data,
+  //       product_id: newProduct[0].id,
+  //     }).catch((err) => {
+  //       console.error(err);
+  //       res.status(500).json({ message: err.message });
+  //     });
+  //   }
+
+  //   res
+  //     .status(201)
+  //     .json({ message: 'Product created', product: newProduct[0] });
+  // } catch (err) {
+  // console.error(err);
+  // res.status(500).json({ message: err.message });
+  // }
 });
 
 // update the give product
