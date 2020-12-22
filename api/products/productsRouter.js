@@ -1,5 +1,6 @@
 const express = require('express');
 const router = express.Router();
+const { cloudinary } = require('../../config/cloudinary');
 const Products = require('./productsModel');
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
@@ -51,39 +52,33 @@ router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
 // create a new product
 router.post('/', authRequired, validateBody, async (req, res) => {
   try {
-    const product = req.body;
+    const { product, images } = req.body;
 
-    res.status(200).json({ product });
+    // create the product
+    const newProduct = await Products.create(product);
+
+    // upload all product images to cloudinary
+    for (let i = 0; i < images.length; i++) {
+      const { image, name } = images[i];
+      const uploadedResponse = await cloudinary.uploader.upload(image, {
+        upload_preset: 'mmp_uploads',
+      });
+
+      // store the image record
+      await create('products_images', {
+        product_id: newProduct[0].id,
+        image_id: uploadedResponse.asset_id,
+        name,
+      });
+    }
+
+    res
+      .status(201)
+      .json({ message: 'Product created.', product: newProduct[0] });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
-
-  // try {
-  //   const newProduct = await Products.create(product);
-
-  //   // store all images
-  //   for (let i = 0; i < images.length; i++) {
-  //     const { name, mimetype, data } = files[images[i]];
-
-  //     create('products_images', {
-  //       name,
-  //       type: mimetype,
-  //       image: data,
-  //       product_id: newProduct[0].id,
-  //     }).catch((err) => {
-  //       console.error(err);
-  //       res.status(500).json({ message: err.message });
-  //     });
-  //   }
-
-  //   res
-  //     .status(201)
-  //     .json({ message: 'Product created', product: newProduct[0] });
-  // } catch (err) {
-  // console.error(err);
-  // res.status(500).json({ message: err.message });
-  // }
 });
 
 // update the give product

@@ -9,9 +9,8 @@ exports.up = function (knex) {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
 
+    table.string('image_id').notNullable();
     table.string('name').notNullable();
-    table.string('type').notNullable();
-    table.binary('image').notNullable();
   });
 };
 
