@@ -8,8 +8,6 @@ exports.seed = function (knex) {
         {
           profile_id: '00ulthapbErVUwVJy4x6',
           title: 'Mrs',
-          img:
-            'https://cdn.pixabay.com/photo/2020/03/24/11/13/workout-items-4963663__480.png',
           price: 12.99,
           description: 'Morbi non lectus',
           category: 'Marketing',
@@ -21,8 +19,6 @@ exports.seed = function (knex) {
         {
           profile_id: '00ulthapbErVUwVJy4x6',
           title: 'Rev',
-          img:
-            'https://cdn.pixabay.com/photo/2020/04/15/14/45/microphone-5046876__480.jpg',
           price: 12.99,
           description: 'Praesent id massa ',
           category: 'Business Development',
@@ -34,8 +30,6 @@ exports.seed = function (knex) {
         {
           profile_id: 'bv8tg9jvp9t1461zr7x1',
           title: 'Mrs',
-          img:
-            'https://cdn.pixabay.com/photo/2016/11/22/23/44/buildings-1851246__480.jpg',
           price: 12.99,
           description: 'Proin leo odio, ',
           category: 'Business Development',
@@ -47,8 +41,6 @@ exports.seed = function (knex) {
         {
           profile_id: '2j0epjkdhqo6wvkh0v7f',
           title: 'Honorable',
-          img:
-            'https://cdn.pixabay.com/photo/2014/11/05/15/57/salmon-518032__480.jpg',
           price: 12.99,
           description: 'Sed sagittis. Nam congue',
           category: 'Marketing',
@@ -60,8 +52,6 @@ exports.seed = function (knex) {
         {
           profile_id: '2j0epjkdhqo6wvkh0v7f',
           title: 'Rev',
-          img:
-            'https://cdn.pixabay.com/photo/2013/07/12/18/20/shoes-153310__480.png',
           price: 12.99,
           description: 'In hac habitasse platea',
           category: 'Product Management',

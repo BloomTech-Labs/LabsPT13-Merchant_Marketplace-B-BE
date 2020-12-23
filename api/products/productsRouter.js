@@ -40,7 +40,18 @@ router.get('/tags', authRequired, async (req, res) => {
 
 // retrieve a product by the given :id
 router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
-  res.status(200).json(req.product);
+  try {
+    let images = await findAll('products_images');
+
+    const product = {
+      ...req.product,
+      images: images.filter((img) => img.product_id === req.product.id),
+    };
+
+    res.status(200).json(product);
+  } catch (err) {
+    console.error(err);
+  }
 });
 
 // create a new product
