@@ -58,10 +58,10 @@ router.post('/', authRequired, validateBody, async (req, res) => {
         upload_preset: 'mmp_uploads',
       });
 
-      // store the image record
+      // store the image url in DB
       await create('products_images', {
         product_id: newProduct[0].id,
-        image_id: uploadedResponse.public_id,
+        img_url: uploadedResponse.url,
         name,
       });
     }
