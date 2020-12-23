@@ -6,6 +6,7 @@ const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
 const { findAll, create, update, remove } = require('../globalDbModels');
+const appendProductImages = require('../../helpers/appendProductImages');
 
 const TABLE_NAME = 'products';
 
@@ -15,11 +16,7 @@ router.get('/', authRequired, async (req, res) => {
     let products = await findAll(TABLE_NAME);
     let images = await findAll('products_images');
 
-    products = products.map((p) => ({
-      ...p,
-      images: images.filter((img) => p.id === img.product_id),
-    }));
-
+    products = products.map((p) => appendProductImages(p, images));
     res.status(200).json(products);
   } catch (err) {
     console.error(err);
@@ -43,12 +40,7 @@ router.get('/:id', authRequired, validateId(TABLE_NAME), async (req, res) => {
   try {
     let images = await findAll('products_images');
 
-    const product = {
-      ...req.product,
-      images: images.filter((img) => img.product_id === req.product.id),
-    };
-
-    res.status(200).json(product);
+    res.status(200).json(appendProductImages(req.product, images));
   } catch (err) {
     console.error(err);
   }
