@@ -9,7 +9,7 @@ exports.up = function (knex) {
       .onDelete('CASCADE')
       .onUpdate('CASCADE');
 
-    table.string('image_id').notNullable();
+    table.string('img_url').notNullable();
     table.string('name').notNullable();
   });
 };
