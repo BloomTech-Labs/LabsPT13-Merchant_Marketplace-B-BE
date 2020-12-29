@@ -25,11 +25,10 @@ router.get('/', authRequired, async (req, res) => {
 });
 
 // retrieve seller's inventory
-router.get('/:profile_id', authRequired, async (req, res) => {
+router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
   try {
-    const { profile_id } = req.params;
-
-    let products = await Products.getSellerInventory(profile_id);
+    const { id } = req.params;
+    let products = await Products.getSellerInventory(id);
     res.status(200).json(products);
   } catch (err) {
     console.error(err);
