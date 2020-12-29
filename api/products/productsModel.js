@@ -1,6 +1,6 @@
 const db = require('../../data/db-config');
 
-const getSellerProducts = (profile_id) => {
+const getSellerInventory = (profile_id) => {
   return db('products').where({ profile_id });
 };
 
@@ -20,4 +20,4 @@ const create = (product) => {
   return db('products').insert(product).returning('*');
 };
 
-module.exports = { getSellerProducts, getAllTags, create };
+module.exports = { getSellerInventory, getAllTags, create };
