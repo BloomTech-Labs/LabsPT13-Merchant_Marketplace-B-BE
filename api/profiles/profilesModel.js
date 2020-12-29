@@ -1,6 +1,10 @@
 const db = require('../../data/db-config');
 const { findBy } = require('../globalDbModels');
 
+const getSellerInventory = (profile_id) => {
+  return db('products').where({ profile_id });
+};
+
 const create = async (profile) => {
   return db('profiles').insert(profile).returning('*');
 };
@@ -23,4 +27,4 @@ const findOrCreateProfile = async (profileObj) => {
   }
 };
 
-module.exports = { create, findOrCreateProfile };
+module.exports = { getSellerInventory, create, findOrCreateProfile };

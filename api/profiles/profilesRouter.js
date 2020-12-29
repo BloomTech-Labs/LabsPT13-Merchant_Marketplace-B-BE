@@ -113,8 +113,19 @@ router.get('/', authRequired, function (req, res) {
  *      404:
  *        description: 'Profile not found'
  */
+
+// retrieve seller's info including inventory
 router.get('/:id', authRequired, validateId(TABLE_NAME), (req, res) => {
-  res.status(200).json(req.profile);
+  const { id } = req.params;
+
+  Profiles.getSellerInventory(id)
+    .then((products) => {
+      res.status(200).json({ ...req.profile, products });
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).json({ message: err.message });
+    });
 });
 
 /**

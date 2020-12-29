@@ -1,9 +1,5 @@
 const db = require('../../data/db-config');
 
-const getSellerInventory = (profile_id) => {
-  return db('products').where({ profile_id });
-};
-
 const getAllTags = async () => {
   let result = new Set();
   let tags = await db('products as p').select('p.tags');
@@ -20,4 +16,4 @@ const create = (product) => {
   return db('products').insert(product).returning('*');
 };
 
-module.exports = { getSellerInventory, getAllTags, create };
+module.exports = { getAllTags, create };
