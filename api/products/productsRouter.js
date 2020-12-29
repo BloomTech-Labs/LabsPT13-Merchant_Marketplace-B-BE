@@ -24,18 +24,6 @@ router.get('/', authRequired, async (req, res) => {
   }
 });
 
-// retrieve seller's inventory
-router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
-  try {
-    const { id } = req.params;
-    let products = await Products.getSellerInventory(id);
-    res.status(200).json(products);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
 // retrieve all available tags
 router.get('/tags', authRequired, async (req, res) => {
   try {
