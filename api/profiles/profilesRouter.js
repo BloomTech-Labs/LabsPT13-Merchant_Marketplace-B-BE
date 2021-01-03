@@ -122,17 +122,21 @@ router.get(
   '/:id/inventory',
   authRequired,
   validateId(TABLE_NAME),
-  (req, res) => {
-    const { id } = req.params;
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      let inventory = await Profiles.getSellerInventory(id);
 
-    Profiles.getSellerInventory(id)
-      .then((inventory) => {
-        res.status(200).json(inventory);
-      })
-      .catch((err) => {
-        console.error(err);
-        res.status(500).json({ message: err.message });
-      });
+      for (let i = 0; i < inventory.length; i++) {
+        const images = await Profiles.getProductImages(inventory[i].id);
+        inventory[i].images = images;
+      }
+
+      res.status(200).json(inventory);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: err.message });
+    }
   }
 );
 
