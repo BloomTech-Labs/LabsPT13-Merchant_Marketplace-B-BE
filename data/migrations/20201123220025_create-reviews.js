@@ -1,7 +1,7 @@
 exports.up = function (knex) {
   return knex.schema.createTable('reviews', function (table) {
     table
-      .string('profile_id')
+      .string('seller_id')
       .notNullable()
       .references('id')
       .inTable('profiles')
@@ -9,15 +9,16 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     table
-      .integer('product_id')
-      .unsigned()
+      .string('buyer_id')
       .notNullable()
       .references('id')
-      .inTable('products');
+      .inTable('profiles')
+      .onDelete('CASCADE')
+      .onUpdate('CASCADE');
 
     table.integer('rate').notNullable();
     table.string('description').notNullable();
-    table.primary(['profile_id', 'product_id']);
+    table.primary(['seller_id', 'buyer_id']);
   });
 };
 
