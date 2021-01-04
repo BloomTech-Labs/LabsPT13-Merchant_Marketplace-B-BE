@@ -41,7 +41,7 @@ router.delete('/:seller_id/:buyer_id', authRequired, async (req, res) => {
     const review = await findBy(TABLE_NAME, { seller_id, buyer_id });
 
     if (review) {
-      await remove('reviews', { profile_id, product_id });
+      await remove('reviews', { seller_id, buyer_id });
       res.status(200).json({ message: 'Review deleted' });
     } else {
       res.status(404).json({
