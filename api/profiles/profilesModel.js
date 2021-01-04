@@ -1,14 +1,6 @@
 const db = require('../../data/db-config');
 const { findBy } = require('../globalDbModels');
 
-const getSellerInventory = (profile_id) => {
-  return db('products').where({ profile_id });
-};
-
-const getProductImages = (product_id) => {
-  return db('products_images').where({ product_id });
-};
-
 const create = async (profile) => {
   return db('profiles').insert(profile).returning('*');
 };
@@ -31,9 +23,4 @@ const findOrCreateProfile = async (profileObj) => {
   }
 };
 
-module.exports = {
-  getSellerInventory,
-  create,
-  findOrCreateProfile,
-  getProductImages,
-};
+module.exports = { create, findOrCreateProfile };

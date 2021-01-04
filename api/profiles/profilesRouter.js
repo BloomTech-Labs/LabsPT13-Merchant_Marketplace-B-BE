@@ -4,7 +4,13 @@ const Profiles = require('./profilesModel');
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findAll, findBy, update, remove } = require('../globalDbModels');
+const {
+  findAll,
+  findAllBy,
+  findBy,
+  update,
+  remove,
+} = require('../globalDbModels');
 
 const TABLE_NAME = 'profiles';
 
@@ -125,10 +131,12 @@ router.get(
   async (req, res) => {
     try {
       const { id } = req.params;
-      let inventory = await Profiles.getSellerInventory(id);
+      let inventory = await findAllBy('products', { profile_id: id });
 
       for (let i = 0; i < inventory.length; i++) {
-        const images = await Profiles.getProductImages(inventory[i].id);
+        const images = await findAllBy('products_images', {
+          product_id: inventory[i].id,
+        });
         inventory[i].images = images;
       }
 
