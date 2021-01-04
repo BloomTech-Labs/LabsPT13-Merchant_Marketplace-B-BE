@@ -3,22 +3,14 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findBy, create, remove } = require('../globalDbModels');
+const { findAll, findBy, create, remove } = require('../globalDbModels');
 
 const TABLE_NAME = 'reviews';
 
-// retrieve reviews by product_id
-router.get('/:product_id', authRequired, validateId(TABLE_NAME), (req, res) => {
-  res.status(200).json(req.order);
+// retrieve single seller's reviews
+router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
+  res.status(200).json({ message: 'MADE IT' });
 });
-
-// retrieve seller's reviews
-router.get(
-  '/:id',
-  authRequired,
-  validateId(TABLE_NAME),
-  async (req, res) => {}
-);
 
 // create a new review
 router.post('/', authRequired, validateBody, async (req, res) => {
