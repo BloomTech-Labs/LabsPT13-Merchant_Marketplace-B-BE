@@ -3,8 +3,9 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
 const {
-  findProfileItems,
+  findAllBy,
   findBy,
+  findProfileItems,
   create,
   remove,
 } = require('../globalDbModels');
@@ -12,19 +13,20 @@ const {
 const TABLE_NAME = 'carts';
 
 // retrieve user's cart items
-router.get('/:profile_id', authRequired, async (req, res) => {
+router.get('/:profile_id', async (req, res) => {
   const { profile_id = '' } = req.params;
 
   try {
-    const cartItems = await findProfileItems(TABLE_NAME, profile_id);
+    let cart = await findProfileItems(TABLE_NAME, profile_id);
 
-    if (cartItems.length) {
-      res.status(200).json(cartItems);
-    } else {
-      res.status(404).json({
-        message: `Could not find the specified profile`,
+    for (let i = 0; i < cart.length; i++) {
+      const images = await findAllBy('products_images', {
+        product_id: cart[i].id,
       });
+      cart[i].images = images;
     }
+
+    res.status(200).json(cart);
   } catch (err) {
     console.log(err);
     res.status(500).json({
