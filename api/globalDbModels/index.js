@@ -4,6 +4,10 @@ const findAll = (table_name) => {
   return db(table_name);
 };
 
+const findAllBy = (table_name, filter) => {
+  return db(table_name).where(filter);
+};
+
 const findProfileItems = (table_name, profile_id) => {
   return db(`${table_name} as tbl`)
     .join('profiles as pf', 'tbl.profile_id', 'pf.id')
@@ -29,4 +33,12 @@ const remove = (table_name, filter) => {
   return db(table_name).where(filter).delete();
 };
 
-module.exports = { findAll, findProfileItems, findBy, create, update, remove };
+module.exports = {
+  findAll,
+  findAllBy,
+  findProfileItems,
+  findBy,
+  create,
+  update,
+  remove,
+};
