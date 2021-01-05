@@ -24,17 +24,6 @@ router.get('/', authRequired, async (req, res) => {
   }
 });
 
-// get products count
-router.get('/count', authRequired, async (req, res) => {
-  try {
-    let products = await findAll(TABLE_NAME);
-    res.status(200).json({ count: products.length });
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: err.message });
-  }
-});
-
 // retrieve all available tags
 router.get('/tags', authRequired, async (req, res) => {
   try {
