@@ -3,16 +3,29 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findBy, create, update, remove } = require('../globalDbModels');
+const {
+  findAllBy,
+  findBy,
+  create,
+  update,
+  remove,
+} = require('../globalDbModels');
 const { getProfileOrders } = require('./ordersModel');
+
 const TABLE_NAME = 'orders';
 
 // retrieve buyer's orders
 router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
   try {
     const { id } = req.params;
-    const orders = await getProfileOrders(id);
+    let orders = await getProfileOrders(id);
 
+    for (let i = 0; i < orders.length; i++) {
+      const images = await findAllBy('products_images', {
+        product_id: orders[i].id,
+      });
+      orders[i].images = images;
+    }
     res.status(200).json(orders);
   } catch (err) {
     console.error(err);
