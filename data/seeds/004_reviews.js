@@ -19,7 +19,7 @@ exports.seed = function (knex) {
           rate: 2.5,
           title: 'Good build quality but poor picture quality',
           description:
-            "Usually a huge fan of Dell monitors, and this has most of the things I like such as a great stand that's very adjustable and easy to assemble/disassemble while being really sturdy. But the picture quality on this monitor really isn't that great, and the options are a little frustrating for trying to calibrate it.",
+            "Usually a huge fan of Dell monitors, and this has most of the things I like such as a great stand that's very adjustable and easy to assemble/disassemble while being really sturdy.",
         },
         {
           seller_id: '00ulthapbErVUwVJy4x6',
@@ -35,7 +35,7 @@ exports.seed = function (knex) {
           rate: 5,
           title: 'Great picture and build quality',
           description:
-            'This is an excellent monitor and especially at the Black Friday price. I was able to get G-Sync to work with my RTX 2070-Super no problem. Like others have stated you need to buy a v1.4 DisplayPort cable as the one that comes in the box is only a v1.2 which will cause flickering issues with G-sync turned on. Also, be sure to check the box and make sure you get the REV A03 or A04 model.',
+            'This is an excellent monitor and especially at the Black Friday price. I was able to get G-Sync to work with my RTX 2070-Super no problem.',
         },
       ]);
     });
