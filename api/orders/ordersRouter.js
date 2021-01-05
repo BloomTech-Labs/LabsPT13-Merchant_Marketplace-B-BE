@@ -4,12 +4,15 @@ const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
 const { findBy, create, update, remove } = require('../globalDbModels');
-
+const { getProfileOrders } = require('./ordersModel');
 const TABLE_NAME = 'orders';
 
 // retrieve buyer's orders
 router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
   try {
+    const { id } = req.params;
+    const orders = await getProfileOrders(id);
+    res.status(200).json(orders);
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });

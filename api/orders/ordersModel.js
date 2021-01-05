@@ -1,6 +1,6 @@
 const db = require('../../data/db-config');
 
-const findProfileOrders = (profile_id) => {
+const getProfileOrders = (profile_id) => {
   return db('orders as o')
     .join('profiles as pf', 'o.profile_id', 'pf.id')
     .join('products as pd', 'o.produce_id', 'pd.id')
@@ -14,4 +14,4 @@ const findProfileOrders = (profile_id) => {
     .where({ 'o.profile_id': profile_id });
 };
 
-module.export = { findProfileOrders };
+module.export = { getProfileOrders };
