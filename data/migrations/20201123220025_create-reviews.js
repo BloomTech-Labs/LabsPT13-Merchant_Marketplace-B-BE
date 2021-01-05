@@ -19,6 +19,7 @@ exports.up = function (knex) {
     table.float('rate').notNullable();
     table.string('title').notNullable();
     table.string('description').notNullable();
+    table.timestamps(true, true);
     table.primary(['seller_id', 'buyer_id']);
   });
 };
