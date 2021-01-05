@@ -17,6 +17,7 @@ exports.up = function (knex) {
       .onUpdate('CASCADE');
 
     table.float('rate').notNullable();
+    table.string('title').notNullable();
     table.string('description').notNullable();
     table.primary(['seller_id', 'buyer_id']);
   });
