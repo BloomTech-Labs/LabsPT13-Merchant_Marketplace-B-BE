@@ -3,14 +3,17 @@ const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateId = require('../middleware/validateId');
 const validateBody = require('../middleware/validateBody');
-const { findBy, update, remove } = require('../globalDbModels');
-const Orders = require('./ordersModel');
+const { findBy, create, update, remove } = require('../globalDbModels');
 
 const TABLE_NAME = 'orders';
 
-// retrieve order by ID
-router.get('/:id', authRequired, validateId(TABLE_NAME), (req, res) => {
-  res.status(200).json(req.order);
+// retrieve buyer's orders
+router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
+  try {
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: err.message });
+  }
 });
 
 // create a new order
@@ -20,7 +23,7 @@ router.post('/', authRequired, validateBody, async (req, res) => {
     const product = await findBy('products', { id: req.body.product_id });
 
     if (profile && product) {
-      const inserted = await Orders.create(req.body);
+      const inserted = await create(TABLE_NAME, req.body);
       res.status(201).json({ message: 'Order created', order: inserted[0] });
     } else {
       res
