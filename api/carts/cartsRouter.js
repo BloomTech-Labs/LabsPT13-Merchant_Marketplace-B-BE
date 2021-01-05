@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
+const validateId = require('../middleware/validateId');
 const {
   findAllBy,
   findBy,
@@ -13,11 +14,11 @@ const {
 const TABLE_NAME = 'carts';
 
 // retrieve user's cart items
-router.get('/:profile_id', async (req, res) => {
-  const { profile_id = '' } = req.params;
+router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
+  const { id = '' } = req.params;
 
   try {
-    let cart = await findProfileItems(TABLE_NAME, profile_id);
+    let cart = await findProfileItems(TABLE_NAME, id);
 
     for (let i = 0; i < cart.length; i++) {
       const images = await findAllBy('products_images', {
