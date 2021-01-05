@@ -12,6 +12,7 @@ router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
   try {
     const { id } = req.params;
     const orders = await getProfileOrders(id);
+
     res.status(200).json(orders);
   } catch (err) {
     console.error(err);

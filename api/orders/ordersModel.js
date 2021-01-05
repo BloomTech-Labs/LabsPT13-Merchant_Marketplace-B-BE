@@ -2,16 +2,15 @@ const db = require('../../data/db-config');
 
 const getProfileOrders = (profile_id) => {
   return db('orders as o')
-    .join('profiles as pf', 'o.profile_id', 'pf.id')
-    .join('products as pd', 'o.produce_id', 'pd.id')
+    .where({ 'o.profile_id': profile_id })
+    .join('products as pd', 'o.product_id', 'pd.id')
     .select(
       'pd.*',
       'o.quantity',
       'o.total_price',
       'o.created_at',
-      'o_updated_at'
-    )
-    .where({ 'o.profile_id': profile_id });
+      'o.updated_at'
+    );
 };
 
-module.export = { getProfileOrders };
+module.exports = { getProfileOrders };
