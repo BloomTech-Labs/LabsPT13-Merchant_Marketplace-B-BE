@@ -10,7 +10,6 @@ const {
   update,
   remove,
 } = require('../globalDbModels');
-const { getProfileOrders } = require('./ordersModel');
 
 const TABLE_NAME = 'orders';
 
@@ -18,14 +17,25 @@ const TABLE_NAME = 'orders';
 router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
   try {
     const { id } = req.params;
-    let orders = await getProfileOrders(id);
+    // get all the orders for the specified user
+    let orders = await findAllBy(TABLE_NAME, { profile_id: id });
 
+    // for each order, get its product data, including images and the seller data
     for (let i = 0; i < orders.length; i++) {
-      const images = await findAllBy('products_images', {
-        product_id: orders[i].id,
+      let product = await findBy('products', { id: orders[i].product_id });
+      let images = await findAllBy('products_images', {
+        product_id: orders[i].product_id,
       });
-      orders[i].images = images;
+      let seller = await findBy('profiles', { id: product.profile_id });
+
+      // add the seller data as key.
+      product.seller = seller;
+      // remove the profile_id key since it references the seller
+      delete product['profile_id'];
+      // now format the order to have a product key with all its data
+      orders[i].product = { ...product, images };
     }
+
     res.status(200).json(orders);
   } catch (err) {
     console.error(err);
