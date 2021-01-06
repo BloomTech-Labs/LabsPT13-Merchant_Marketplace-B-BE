@@ -28,12 +28,10 @@ router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
       });
       let seller = await findBy('profiles', { id: product.profile_id });
 
-      // add the seller data as key.
-      product.seller = seller;
       // remove the profile_id key since it references the seller
       delete product['profile_id'];
-      // now format the order to have a product key with all its data
-      orders[i].product = { ...product, images };
+      // now format the order to have the product and seller data
+      orders[i] = { ...orders[i], seller, product: { ...product, images } };
     }
 
     res.status(200).json(orders);
