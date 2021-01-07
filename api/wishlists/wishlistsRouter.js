@@ -2,9 +2,11 @@ const express = require('express');
 const router = express.Router();
 const authRequired = require('../middleware/authRequired');
 const validateBody = require('../middleware/validateBody');
+const validateId = require('../middleware/validateId');
 
 const {
   findAll,
+  findAllBy,
   findProfileItems,
   findBy,
   create,
@@ -20,13 +22,19 @@ router.get('/', async (req, res) => {
 });
 
 // retrieve user's saved items
-router.get('/:profile_id', authRequired, async (req, res) => {
-  const { profile_id = '' } = req.params;
+router.get('/:id', authRequired, validateId('profiles'), async (req, res) => {
+  const { id = '' } = req.params;
 
   try {
-    const wishList = await findProfileItems(TABLE_NAME, profile_id);
+    let wishList = await findProfileItems(TABLE_NAME, id);
 
     if (wishList.length) {
+      for (let i = 0; i < wishList.length; i++) {
+        const images = await findAllBy('products_images', {
+          product_id: wishList[i].id,
+        });
+        wishList[i].images = images;
+      }
       res.status(200).json(wishList);
     } else {
       res.status(404).json({
